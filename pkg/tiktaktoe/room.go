@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+
+	"github.com/google/uuid"
 )
 
 type Room struct {
@@ -20,9 +22,9 @@ type Room struct {
 }
 
 func NewRoom(pool *Pool) *Room {
-	//id := uuid.New()
+	id := uuid.New()
 	return &Room{
-		Id:         "test",
+		Id:         id.String(),
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
 		BroadCast:  make(chan Payload),

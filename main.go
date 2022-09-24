@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"tiktaktoe/pkg/tiktaktoe"
 
@@ -46,8 +48,18 @@ func joinRoom(pool *tiktaktoe.Pool, w http.ResponseWriter, r *http.Request) {
 }
 
 func startServer() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("defaulting to port %s", port)
+	}
 	pool := tiktaktoe.NewPool()
 	go pool.Start()
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "Pong")
+		return
+	})
 	http.HandleFunc("/ws/create-room/", func(w http.ResponseWriter, r *http.Request) {
 		createRoom(pool, w, r)
 	})
@@ -56,7 +68,8 @@ func startServer() {
 		joinRoom(pool, w, r)
 	})
 
-	http.ListenAndServe(":3000", nil)
+	log.Printf("listening on port %s", port)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func main() {
