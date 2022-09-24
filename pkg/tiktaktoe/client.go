@@ -2,7 +2,7 @@ package tiktaktoe
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 
 	"github.com/gorilla/websocket"
 )
@@ -22,7 +22,7 @@ func (c *Client) Read() {
 	for {
 		_, p, err := c.Conn.ReadMessage()
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			return
 		}
 

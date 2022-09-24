@@ -12,9 +12,11 @@ import (
 )
 
 func createRoom(pool *tiktaktoe.Pool, w http.ResponseWriter, r *http.Request) {
+	log.Println("Creating room")
 	room := tiktaktoe.NewRoom(pool)
 	conn, err := websocket.Upgrade(w, r, nil, 1024, 1024)
 	if err != nil {
+		log.Println(err)
 		w.WriteHeader(http.StatusBadGateway)
 		fmt.Fprint(w, "Unable to stablish connection")
 	}

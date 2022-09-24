@@ -2,7 +2,6 @@ package tiktaktoe
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 
 	"github.com/google/uuid"
@@ -58,7 +57,6 @@ func (r *Room) removePlayer(c *Client) error {
 func (r *Room) startGame() {
 	if !r.CanAddPlayer() {
 		randPlayer := rand.Intn(2)
-		fmt.Println(randPlayer)
 		r.currentPlayer = r.players[randPlayer]
 		otherPlayer := r.getOtherPlayer(r.currentPlayer)
 		r.currentPlayer.Conn.WriteJSON(message{Event: "GAME_START", Message: "Starting game"})

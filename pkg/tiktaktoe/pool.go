@@ -1,6 +1,8 @@
 package tiktaktoe
 
-import "fmt"
+import (
+	"log"
+)
 
 type Pool struct {
 	Register   chan *Room
@@ -21,13 +23,13 @@ func (p *Pool) Start() {
 		select {
 		case room := <-p.Register:
 			{
-				fmt.Printf("Creating new room with id '%s' \n", room.Id)
+				log.Printf("Creating new room with id '%s' \n", room.Id)
 				p.rooms[room.Id] = room
 				go room.Start()
 			}
 		case room := <-p.Unregister:
 			{
-				fmt.Printf("Closing room with id '%s' \n", room.Id)
+				log.Printf("Closing room with id '%s' \n", room.Id)
 				delete(p.rooms, room.Id)
 			}
 		}
